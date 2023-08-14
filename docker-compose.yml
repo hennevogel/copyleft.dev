@@ -1,19 +1,31 @@
 version: '2'
 services:
   reverse-proxy:
-    image: traefik:v3.0
-    command: --docker
-    ports:
-      - "80:80"
+    image: traefik:v2.10
+    command:
+      # - "--api.insecure=true"
+      - "--providers.docker"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.email=hvogel@hennevogel.de"
+      - "--certificatesresolvers.myresolver.acme.storage=acme.json"
+      # used during the challenge
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
     volumes:
+      # expose docker socket to be able to listen to it
       - /var/run/docker.sock:/var/run/docker.sock
+      # configuration file for ACME
+      - ./letsencrypt/acme.json:/etc/traefik/acme/acme.json
   thelounge:
     image: ghcr.io/thelounge/thelounge:latest
     container_name: thelounge
     ports:
-      - "9000:9000"
+      - "9000:80"
     volumes:
       - ./thelounge/data:/var/opt/thelounge
     labels:    
-      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
-
+      - traefik.http.routers.thelounge.rule=Host(`irc.copyleft.dev`)
+      - traefik.http.routers.thelounge.tls=true
+      - traefik.http.routers.thelounge.tls.certresolver=myresolver
+      - traefik.http.routers.thelounge.tls.domains[0].main=copyleft.dev
+      - traefik.http.routers.thelounge.tls.domains[0].sans=*.copyleft.dev
