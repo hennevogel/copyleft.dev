@@ -1,0 +1,19 @@
+version: '2'
+services:
+  reverse-proxy:
+    image: traefik:v3.0
+    command: --docker
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  thelounge:
+    image: ghcr.io/thelounge/thelounge:latest
+    container_name: thelounge
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./thelounge/data:/var/opt/thelounge
+    labels:    
+      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
+
