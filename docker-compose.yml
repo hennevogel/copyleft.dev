@@ -7,25 +7,30 @@ services:
       - "--providers.docker"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.email=hvogel@hennevogel.de"
-      - "--certificatesresolvers.myresolver.acme.storage=acme.json"
-      # used during the challenge
-      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--providers.docker.exposedbydefault=false"
+      - "--certificatesresolvers.mydnschallenge.acme.email=hvogel@hennevogel.de"
+      - "--certificatesresolvers.mydnschallenge.acme.storage=acme.json"
+      - "--certificatesresolvers.mydnschallenge.acme.dnschallenge=true"
+      - "--certificatesresolvers.mydnschallenge.acme.dnschallenge.provider=linodev4"
+    ports:
+      - 80:80
+      - 443:443
+      # - 8080:8080
     volumes:
       # expose docker socket to be able to listen to it
       - /var/run/docker.sock:/var/run/docker.sock
       # configuration file for ACME
       - ./letsencrypt/acme.json:/etc/traefik/acme/acme.json
+      - ./letsencrypt/linode_dns_token.txt:/etc/linode_dns_token.txt
+    environment:
+      - LINODE_TOKEN_FILE=/etc/linode_dns_token.txt
   thelounge:
     image: ghcr.io/thelounge/thelounge:latest
     container_name: thelounge
-    ports:
-      - "9000:80"
     volumes:
       - ./thelounge/data:/var/opt/thelounge
     labels:    
+      - traefik.enable=true
       - traefik.http.routers.thelounge.rule=Host(`irc.copyleft.dev`)
-      - traefik.http.routers.thelounge.tls=true
-      - traefik.http.routers.thelounge.tls.certresolver=myresolver
-      - traefik.http.routers.thelounge.tls.domains[0].main=copyleft.dev
-      - traefik.http.routers.thelounge.tls.domains[0].sans=*.copyleft.dev
+      - traefik.http.routers.thelounge.entrypoints=websecure
+      - traefik.http.routers.thelounge.tls.certresolver=mydnschallenge
