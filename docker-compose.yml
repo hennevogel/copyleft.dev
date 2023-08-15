@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   reverse-proxy:
     image: traefik:v2.10
@@ -34,3 +34,31 @@ services:
       - traefik.http.routers.thelounge.rule=Host(`irc.copyleft.dev`)
       - traefik.http.routers.thelounge.entrypoints=websecure
       - traefik.http.routers.thelounge.tls.certresolver=mydnschallenge
+  featmap:
+    image: leap_featmap
+    container_name: featmap
+    build:
+      context: featmap
+      dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.featmap.rule=Host(`featmap.copyleft.dev`)
+      - traefik.http.routers.featmap.entrypoints=websecure
+      - traefik.http.routers.featmap.tls.certresolver=mydnschallenge
+  postgres:
+    image: postgres:15-alpine
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${FEATMAP_DB_NAME}
+      POSTGRES_USER: ${FEATMAP_DB_USER}
+      POSTGRES_PASSWORD: ${FEATMAP_DB_PASS}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${FEATMAP_DB_USER} -d ${FEATMAP_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+

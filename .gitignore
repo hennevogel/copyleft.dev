@@ -1,2 +1,5 @@
-thelounge/data/
 letsencrypt
+postgres/data/
+thelounge/data/
+featmap/conf.json
+.env
