@@ -24,6 +24,17 @@ services:
       - ./letsencrypt/linode_dns_token.txt:/etc/linode_dns_token.txt
     environment:
       - LINODE_TOKEN_FILE=/etc/linode_dns_token.txt
+  blog:
+    image: tumbleweed_apache
+    container_name: blog
+    volumes:
+      - ../blog/_site:/srv/www/htdocs
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.blog.rule=Host(`copyleft.dev`)
+      - traefik.http.routers.blog.entrypoints=websecure
+      - traefik.http.routers.blog.tls.certresolver=mydnschallenge
+      - traefik.http.middlewares.test-compress.compress=true
   thelounge:
     image: ghcr.io/thelounge/thelounge:latest
     container_name: thelounge
