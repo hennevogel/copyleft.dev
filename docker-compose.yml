@@ -24,7 +24,7 @@ services:
       - ./letsencrypt/acme.json:/etc/traefik/acme/acme.json
       - ./letsencrypt/linode_dns_token.txt:/etc/linode_dns_token.txt
     environment:
-      - LINODE_TOKEN_FILE=/etc/linode_dns_token.txt
+      LINODE_TOKEN_FILE: /etc/linode_dns_token.txt
   blog:
     image: tumbleweed_apache
     container_name: blog
