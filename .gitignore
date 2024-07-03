@@ -2,4 +2,5 @@ letsencrypt
 postgres/data/
 thelounge/data/
 featmap/conf.json
+wekan/
 .env
