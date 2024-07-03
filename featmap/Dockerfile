@@ -1,8 +1,6 @@
 FROM opensuse/leap:15.5
 EXPOSE 5000
 
-COPY conf.json /featmap/
-
 WORKDIR /featmap/
 
 RUN zypper --non-interactive in wget; \

@@ -51,6 +51,8 @@ services:
     build:
       context: featmap
       dockerfile: Dockerfile
+    volumes:
+      - ./featmap/conf.json:/featmap/conf.json
     depends_on:
       postgres:
         condition: service_healthy
