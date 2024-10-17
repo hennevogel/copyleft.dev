@@ -1,6 +1,7 @@
-letsencrypt
+letsencrypt/linode_dns_token.txt
 postgres/data/
 thelounge/data/
 featmap/conf.json
-wekan/
+wekan/db/
+wekan/files/
 .env
