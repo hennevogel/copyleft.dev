@@ -41,7 +41,7 @@ services:
       - traefik.http.routers.blog.tls.certresolver=mydnschallenge
       - traefik.http.middlewares.test-compress.compress=true
   thelounge:
-    image: ghcr.io/thelounge/thelounge:latest
+    image: ghcr.io/thelounge/thelounge:4
     container_name: thelounge
     restart: always
     volumes:
