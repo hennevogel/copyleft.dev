@@ -29,11 +29,14 @@ services:
     image: tumbleweed_apache
     container_name: blog
     restart: always
+    build:
+      context: apache
+      dockerfile: Dockerfile
     volumes:
-      - ../blog/_site:/srv/www/htdocs
+      - ./blog/_site:/srv/www/htdocs
     labels:
       - traefik.enable=true
-      - traefik.http.routers.blog.rule=Host(`copyleft.dev`)
+      - "traefik.http.routers.blog.rule=Host(`copyleft.dev`) || Host(`www.copyleft.dev`) || Host(`hennevogel.de`) || Host(`www.hennevogel.de`)"
       - traefik.http.routers.blog.entrypoints=websecure
       - traefik.http.routers.blog.tls.certresolver=mydnschallenge
       - traefik.http.middlewares.test-compress.compress=true
