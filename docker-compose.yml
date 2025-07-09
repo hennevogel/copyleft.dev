@@ -65,31 +65,6 @@ services:
       - traefik.http.routers.featmap.rule=Host(`featmap.copyleft.dev`)
       - traefik.http.routers.featmap.entrypoints=websecure
       - traefik.http.routers.featmap.tls.certresolver=mydnschallenge
-  wekan:
-    image: ghcr.io/wekan/wekan:v7.51
-    container_name: wekan
-    restart: always
-    environment:
-      WRITABLE_PATH: /data
-      MONGO_URL: 'mongodb://mongodb:27017/wekan'
-      ROOT_URL: 'https://wekan.copyleft.dev'
-      MAIL_URL: "smtp://${WEKAN_SMTP_USER}:${WEKAN_SMTP_PASS}@${WEKAN_SMTP_HOST}:${WEKAN_SMTP_PORT}"
-      MAIL_FROM: ${WEKAN_SMTP_SENDER}
-      WITH_API: false
-      RICHER_CARD_COMMENT_EDITOR: false
-      CARD_OPENED_WEBHOOK_ENABLED: false
-      BIGEVENTS_PATTERN: NONE
-      BROWSER_POLICY_ENABLED: true
-    depends_on:
-      - mongodb
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.wekan.rule=Host(`wekan.copyleft.dev`)
-      - traefik.http.routers.wekan.entrypoints=websecure
-      - traefik.http.routers.wekan.tls.certresolver=mydnschallenge
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./wekan/files:/data:rw
   postgres:
     image: postgres:15-alpine
     restart: always
@@ -104,12 +79,4 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  mongodb:
-    image: mongo:6
-    restart: always
-    command: mongod --logpath /dev/null --oplogSize 128 --quiet
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./wekan/db:/data/db
-      - ./wekan/db-dump:/dump
 
