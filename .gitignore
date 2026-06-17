@@ -3,4 +3,5 @@ postgres/data/
 thelounge/data/
 featmap/conf.json
 blog/
+osem/
 .env

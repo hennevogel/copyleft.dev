@@ -68,6 +68,21 @@ services:
       - traefik.http.routers.featmap.rule=Host(`featmap.copyleft.dev`)
       - traefik.http.routers.featmap.entrypoints=websecure
       - traefik.http.routers.featmap.tls.certresolver=mydnschallenge
+  osem:
+    image: osem
+    container_name: osem
+    restart: always
+    build:
+      context: osem
+      dockerfile: Dockerfile.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.osem.rule=Host(`osem.copyleft.dev`)
+      - traefik.http.routers.osem.entrypoints=websecure
+      - traefik.http.routers.osem.tls.certresolver=mydnschallenge
   postgres:
     image: postgres:15-alpine
     container_name: postgres
