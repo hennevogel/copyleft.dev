@@ -6,3 +6,9 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
+  - package-ecosystem: "docker"
+    # Look for a `Dockerfile` in the `root` directory
+    directory: "/featmap/"
+    # Check for updates once a week
+    schedule:
+      interval: "monthly"
