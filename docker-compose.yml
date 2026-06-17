@@ -24,6 +24,7 @@ services:
     environment:
       LINODE_TOKEN_FILE: /etc/linode_dns_token.txt
       LINODE_PROPAGATION_TIMEOUT: 300
+    privileged: true
   blog:
     image: tumbleweed_apache
     container_name: blog
