@@ -104,7 +104,7 @@ services:
       - traefik.http.routers.miniflux.entrypoints=websecure
       - traefik.http.routers.miniflux.tls.certresolver=mydnschallenge
   postgres:
-    image: postgres:15-alpine3.24
+    image: postgres:18-alpine3.24
     container_name: postgres
     restart: always
     volumes:
