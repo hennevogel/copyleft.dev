@@ -111,12 +111,10 @@ services:
       - ./postgres/data:/var/lib/postgresql/data:z
       - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:z
     environment:
-      POSTGRES_DB: ${FEATMAP_DB_NAME}
-      POSTGRES_USER: ${FEATMAP_DB_USER}
-      POSTGRES_PASSWORD: ${FEATMAP_DB_PASS}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${FEATMAP_DB_USER} -d ${FEATMAP_DB_NAME}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d featmap_production"]
       interval: 10s
       timeout: 5s
       retries: 5
-
