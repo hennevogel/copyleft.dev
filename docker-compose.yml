@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: traefik:v2
+    image: traefik:v2.11.49
     container_name: traefik
     restart: always
     command:
@@ -41,7 +41,7 @@ services:
       - traefik.http.routers.blog.tls.certresolver=mydnschallenge
       - traefik.http.middlewares.test-compress.compress=true
   thelounge:
-    image: ghcr.io/thelounge/thelounge:4
+    image: ghcr.io/thelounge/thelounge:4.4.3
     container_name: thelounge
     restart: always
     volumes:
@@ -104,7 +104,7 @@ services:
       - traefik.http.routers.miniflux.entrypoints=websecure
       - traefik.http.routers.miniflux.tls.certresolver=mydnschallenge
   postgres:
-    image: postgres:15-alpine
+    image: postgres:15-alpine3.24
     container_name: postgres
     restart: always
     volumes:

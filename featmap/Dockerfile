@@ -1,4 +1,4 @@
-FROM opensuse/leap:15.5
+FROM registry.opensuse.org/opensuse/leap:15.5
 
 WORKDIR /featmap/
 
