@@ -95,7 +95,7 @@ services:
     environment:
       - ADMIN_USERNAME=${MINIFLUX_ADMIN_USER}
       - ADMIN_PASSWORD=${MINIFLUX_ADMIN_PASSWORD}
-      - DATABASE_URL=postgres://${MINIFLUX_DB_USER}:${MINIFLUX_DB_PASSWORD}/miniflux?sslmode=disable
+      - DATABASE_URL=postgres://${MINIFLUX_DB_USER}:${MINIFLUX_DB_PASSWORD}@postgres/miniflux?sslmode=disable
       - RUN_MIGRATIONS=1
       - CREATE_ADMIN=1
     labels:
