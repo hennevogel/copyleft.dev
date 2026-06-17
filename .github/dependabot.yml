@@ -4,7 +4,15 @@ version: 2
 updates:
   - package-ecosystem: "docker-compose" # See documentation for possible values
     directory: "/" # Location of package manifests
-    update-types: version-update:semver-minor
+    ignore:
+    - dependency-name: "traefik"
+      update-types: ["version-update:semver-minor"]
+    - dependency-name: "postgres"
+      update-types: ["version-update:semver-minor"]
+    - dependency-name: "miniflux"
+      update-types: ["version-update:semver-minor"]
+    - dependency-name: "thelounge"
+      update-types: ["version-update:semver-minor"]
     schedule:
       interval: "daily"
   - package-ecosystem: "docker"
